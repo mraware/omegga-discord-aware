@@ -1,5 +1,6 @@
 const ConfigRequirements = require("./config-requirements");
 const Discord = require("discord.js");
+const { ChannelType } = Discord;
 
 class PlayerVerifier {
     constructor(pluginCtx) {
@@ -62,8 +63,8 @@ class PlayerVerifier {
                 })
         });
 
-        discordClient.on("message", msg => {
-            if (msg.channel.type === "dm" && msg.author.id !== discordClient.user.id) {
+        discordClient.on("messageCreate", msg => {
+            if (msg.channel.type === ChannelType.DM && msg.author.id !== discordClient.user.id) {
                 let match = msg.content.toString().match(/\d{4}/);
                 if (match) {
                     let code = match[0];
@@ -123,6 +124,9 @@ class PlayerVerifier {
     give_initial_verifications(omegga, discordClient, config) {
         this.pluginCtx.store.get("verified-players")
             .then(verified_players => {
+                if(!verified_players) {
+                  return;
+                }
                 let promises = [];
                 for(let key in verified_players.discord_to_brickadia) {
                     let name = verified_players.discord_to_brickadia[key];
@@ -139,7 +143,7 @@ class PlayerVerifier {
                 }
                 return Promise.all(promises).then(() => verified_players);
             })
-            .then(verified_players => this.pluginCtx.store.set("verified-players", verified_players))
+            .then(verified_players => verified_players && this.pluginCtx.store.set("verified-players", verified_players))
             .catch(reason => console.error("Failed to grant verified roles: " + reason));
     }
 

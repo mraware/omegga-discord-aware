@@ -37,10 +37,10 @@ function setup_report_log(omegga, mod_channel, config, chat_channel) {
 }
 
 function send_report(omegga, channel, name, msg, mod_tag_id, log_url) {
-    let embed = new Discord.MessageEmbed()
+    let embed = new Discord.EmbedBuilder()
         .setColor("#ff0000")
         .setTitle("Report")
-        .setAuthor(name);
+        .setAuthor({ name });
 
     if(log_url) {
         console.log("Report issued for " + log_url);
@@ -49,8 +49,8 @@ function send_report(omegga, channel, name, msg, mod_tag_id, log_url) {
         embed.setDescription(`A report has been issued: ${msg}`);
     }
 
-    let discordMessage = new Discord.APIMessage(channel,
-        {content: mod_tag_id ? `<@&${mod_tag_id}>` : ``, embed: embed});
+    let discordMessage = new Discord.MessagePayload(channel,
+        {content: mod_tag_id ? `<@&${mod_tag_id}>` : ``, embeds: [embed]});
 
     channel.send(discordMessage)
         .then(_ =>

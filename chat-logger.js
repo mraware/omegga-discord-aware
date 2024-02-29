@@ -52,9 +52,9 @@ function create_discord_chat_message(name, channel, msg, compact) {
     if(compact) {
         content = "**"+name+"**: "+msg;
     } else {
-        embed = new Discord.MessageEmbed().setAuthor(name).setDescription(msg);
+        embed = new Discord.EmbedBuilder().setAuthor(name).setDescription(msg);
     }
-    return Discord.APIMessage.create(channel, content,{embed: embed, disableMentions: "all"});
+    return Discord.MessagePayload.create(channel, content,{embed: embed, disableMentions: "all"});
 }
 
 module.exports = log_chats;

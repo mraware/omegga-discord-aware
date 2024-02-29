@@ -11,6 +11,6 @@
   "author": "technologenesis",
   "license": "GPL3",
   "dependencies": {
-    "discord.js": "^12.5.1"
+    "discord.js": "^14.14.1"
   }
 }

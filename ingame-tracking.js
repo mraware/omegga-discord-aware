@@ -45,7 +45,8 @@ function setup_tracking_ingame_players(omegga, discordClient, config, player_ver
 
 function clear_online_players(role) {
     role.guild.members.fetch().then(members => {
-        for (let member of members.array()) {
+        const membersArray = [...members.values()]
+        for (let member of membersArray) {
             member.roles.remove(role.id).catch(reason => {
                 throw "Failed to remove role: " + reason
             });

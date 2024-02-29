@@ -1,4 +1,5 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const { GatewayIntentBits, Partials } = Discord;
 const log_chats = require('./chat-logger');
 const log_reports = require('./report-logger');
 const log_console = require('./console-logger');
@@ -17,7 +18,19 @@ class DiscordIntegrationPlugin {
 
     async init() {
         // log into discord
-        this.discordClient = new Discord.Client();
+        this.discordClient = new Discord.Client({
+            intents: [
+                GatewayIntentBits.DirectMessages,
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent,
+                GatewayIntentBits.GuildMembers,
+                // GatewayIntentBits.GuildPresences,
+            ], 
+            partials: [
+                Partials.Channel
+            ]
+        });
         console.log("Logging in to discord...");
         await this.discordClient.login(this.config.token);
         console.log("Logged in as " + this.discordClient.user.username);

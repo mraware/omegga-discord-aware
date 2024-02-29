@@ -8,7 +8,7 @@ function setup_mod_commands(omegga, discordClient, config) {
         throw "The following configs are required for mod commands, but were not found:\n" + missing_reqs.toString();
     }
 
-    discordClient.on("message", msg => {
+    discordClient.on("messageCreate", msg => {
         msg.channel.guild.roles.fetch(config["mod-tag-id"]).then(mod_role => {
             if (msg.channel.id === config["cmd-channel-id"] && mod_role.members.has(msg.member.id)//msg.member.roles.has(config["mod-tag-id"])
                 && msg.author.id !== discordClient.user.id) {

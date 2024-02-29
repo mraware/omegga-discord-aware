@@ -20,7 +20,7 @@ function setup_godspeak(omegga, discordClient, config) {
 }
 
 function set_godspeak_listener(omegga, discordClient, chat_channel, config, mod_role) {
-    discordClient.on("message", msg => {
+    discordClient.on("messageCreate", msg => {
         if (msg.channel === chat_channel && msg.author.id !== discordClient.user.id)
         {
             if(mod_role && mod_role.members && mod_role.members.has(msg.member.id)) {
